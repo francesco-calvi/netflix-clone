@@ -4,25 +4,33 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginScreen from "./screens/login/LoginScreen";
 import { auth } from "./firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "./features/userSlice";
+import ProfileScreen from "./screens/profile/ProfileScreen";
 
 const Wrapper = styled.div`
   background-color: #111;
 `;
 
 const App: React.FC = () => {
-  const user = null;
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
-        // Logged in
-        console.log(userAuth);
+        dispatch(
+          login({
+            uid: userAuth.uid,
+            email: userAuth.email,
+          })
+        );
       } else {
-        // Logged out
+        dispatch(logout);
       }
       return unsubscribe;
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <Wrapper>
@@ -32,6 +40,7 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
           </Routes>
         </Router>
       )}
