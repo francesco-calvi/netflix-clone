@@ -26,7 +26,7 @@ const App: React.FC = () => {
           })
         );
       } else {
-        dispatch(logout);
+        dispatch(logout());
       }
       return unsubscribe;
     });
@@ -34,7 +34,7 @@ const App: React.FC = () => {
 
   return (
     <Wrapper>
-      {!user ? (
+      {!user.uid ? (
         <LoginScreen />
       ) : (
         <Router>
