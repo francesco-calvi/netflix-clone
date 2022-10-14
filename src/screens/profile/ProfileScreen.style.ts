@@ -11,6 +11,8 @@ export const Body = styled.div`
   width: 50%;
   margin-left: auto;
   margin-right: auto;
+  height: 100%;
+  justify-content: center;
 
   & > h1 {
     font-size: 60px;

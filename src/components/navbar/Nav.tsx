@@ -1,8 +1,11 @@
 import React from "react";
 import { Container, Contents, Logo, Avatar } from "./Navbar.style";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectSubscription } from "../../state/features/userSlice";
 
 const Nav = () => {
+  const subscribed = useSelector(selectSubscription);
   const [show, handleShow] = React.useState(false);
   const navigate = useNavigate();
 
@@ -20,8 +23,8 @@ const Nav = () => {
   }, []);
 
   const goToHome = React.useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+    !!subscribed && navigate("/");
+  }, [navigate, subscribed]);
 
   const goToProfile = React.useCallback(() => {
     navigate("/profile");

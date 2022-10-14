@@ -4,8 +4,16 @@ import Banner from "../../components/banner/Banner";
 import requests from "../../axios/requests";
 import Row from "../../components/row/Row";
 import { Container } from "./HomeScreen.style";
+import { useSelector } from "react-redux";
+import { selectSubscription } from "../../state/features/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
+  // const navigate = useNavigate();
+  // const subscribed = useSelector(selectSubscription);
+  // React.useEffect(() => {
+  //   !subscribed && navigate("/profile");
+  // }, [subscribed]);
   return (
     <Container>
       <Nav />

@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   height: 448px;
   color: white;
-  object-fit: contain:
+  object-fit: contain;
 `;
 
 export const Contents = styled.div`

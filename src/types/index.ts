@@ -39,3 +39,9 @@ export type Plan = {
     };
   };
 };
+
+export type Subscription = {
+  role: string;
+  current_period_end: number;
+  current_period_start: number;
+};

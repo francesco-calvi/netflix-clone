@@ -25,7 +25,7 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
       <Movies>
         {movies.map(
           (movie: any) =>
-            (movie.poster_path || movie.backdrop_path) && (
+            ((isLargeRow && !!movie.poster_path) || !!movie.backdrop_path) && (
               <MovieCard
                 isLargeRow={isLargeRow}
                 key={movie.id}

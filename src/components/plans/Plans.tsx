@@ -13,12 +13,13 @@ import {
 import type { Plan as PlanType } from "../../types";
 import { Plan, SubscribeButton } from "./Plans.style";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { selectSubscription, selectUser } from "../../state/features/userSlice";
 import { loadStripe } from "@stripe/stripe-js";
 
 const Plans = () => {
-  const [products, setProducts] = React.useState();
   const user = useSelector(selectUser);
+  const subscription = useSelector(selectSubscription);
+  const [products, setProducts] = React.useState();
 
   React.useEffect(() => {
     const productRef = collection(db, "products");
@@ -72,27 +73,42 @@ const Plans = () => {
 
   return (
     <div className="plansScreen">
+      <br />
+      {subscription && (
+        <p>
+          Renewal date:{" "}
+          {new Date(
+            subscription?.current_period_end * 1000
+          ).toLocaleDateString()}
+        </p>
+      )}
       {products &&
         (
           Object.entries(products) as [
             productId: string,
             productData: PlanType
           ][]
-        ).map(([productId, productData]) => (
-          // 1000 add sone logic to check if the user's subscription is active ...
+        ).map(([productId, productData]) => {
+          const isCurrentPlan =
+            !!subscription?.role &&
+            productData.name.toLowerCase().includes(subscription.role);
 
-          <Plan key={productId}>
-            <div>
-              <h5>{productData.name}</h5>
-              <h6>{productData.description}</h6>
-            </div>
-            <SubscribeButton
-              onClick={() => loadCheckout(productData.prices.priceId)}
-            >
-              Subscribe
-            </SubscribeButton>
-          </Plan>
-        ))}
+          return (
+            <Plan key={productId} isCurrentPlan={isCurrentPlan}>
+              <div>
+                <h5>{productData.name}</h5>
+                <h6>{productData.description}</h6>
+              </div>
+              <SubscribeButton
+                onClick={() =>
+                  !isCurrentPlan && loadCheckout(productData.prices.priceId)
+                }
+              >
+                {isCurrentPlan ? "Current Plan" : "Subscribe"}
+              </SubscribeButton>
+            </Plan>
+          );
+        })}
     </div>
   );
 };

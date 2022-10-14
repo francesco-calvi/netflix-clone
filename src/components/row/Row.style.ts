@@ -21,10 +21,12 @@ export const Movies = styled.div`
 `;
 
 export const MovieCard = styled.img<{ isLargeRow?: boolean }>`
-  max-height: ${(props) => (props.isLargeRow ? "250px" : "100px")};
-  object-fit: contain;
-  width: 100%;
-  transition: transform 450ms;
+  height: ${(props) => (props.isLargeRow ? "300px" : "150px")};
+  width: ${(props) => (props.isLargeRow ? "200px" : "250px")};
+  object-fit: cover;
+  background-color: #141414;
+  transition: transform 450ms ease-in-out;
+  aspect-ratio: ${(props) => (props.isLargeRow ? "1 / 1" : "16 / 9")};
 
   &:hover {
     transform: ${(props) => (props.isLargeRow ? "scale(1.09)" : "scale(1.08)")};

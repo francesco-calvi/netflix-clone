@@ -5,10 +5,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setIsLoading } from "../../state/features/loaderSlice";
 
 const SignIn = () => {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const validateInputs = React.useCallback(
     () =>
@@ -21,6 +24,7 @@ const SignIn = () => {
   );
 
   const register = (e: any) => {
+    dispatch(setIsLoading(true));
     e.preventDefault();
     if (!validateInputs()) return;
 
@@ -28,16 +32,14 @@ const SignIn = () => {
       auth,
       emailRef!.current!.value,
       passwordRef!.current!.value
-    )
-      .then((authUser: object) => {
-        console.log(authUser);
-      })
-      .catch((error: any) => {
-        alert(error.message);
-      });
+    ).catch((error: any) => {
+      alert(error.message);
+      dispatch(setIsLoading(false));
+    });
   };
 
   const signIn = (e: any) => {
+    dispatch(setIsLoading(true));
     e.preventDefault();
     if (!validateInputs()) return;
 
@@ -45,13 +47,10 @@ const SignIn = () => {
       auth,
       emailRef!.current!.value,
       passwordRef!.current!.value
-    )
-      .then((authUser: object) => {
-        console.log(authUser);
-      })
-      .catch((error: any) => {
-        alert(error.message);
-      });
+    ).catch((error: any) => {
+      alert(error.message);
+      dispatch(setIsLoading(false));
+    });
   };
 
   return (

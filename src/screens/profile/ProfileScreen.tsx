@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Nav from "../../components/navbar/Nav";
-import { selectUser } from "../../features/userSlice";
+import { logout, selectUser } from "../../state/features/userSlice";
 import { auth } from "../../firebase";
 import {
   Body,
@@ -12,9 +12,18 @@ import {
   PlansContainer,
 } from "./ProfileScreen.style";
 import Plans from "../../components/plans/Plans";
+import { useNavigate } from "react-router-dom";
 
 const ProfileScreen = () => {
   const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const callbackSignOut = React.useCallback(() => {
+    dispatch(logout());
+    auth.signOut().then(() => navigate("/"));
+  }, []);
+
   return (
     <Container>
       <Nav />
@@ -31,8 +40,8 @@ const ProfileScreen = () => {
               <h3>Plans</h3>
               <Plans />
               <SignoutButton
-                onClick={() => auth.signOut()}
-                className="profileScreen_signOut"
+                onClick={callbackSignOut}
+                className="profileScreen__signOut"
               >
                 Sign Out
               </SignoutButton>

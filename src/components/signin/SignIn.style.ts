@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  max-width: 300px;
+  width: 300px;
   margin: 0 auto;
   background: rgba(0, 0, 0, 0.85);
   padding: 40px 60px;
-  border-radius: 10px;
+  border-radius: 5px;
 
   & > form {
     display: grid;
