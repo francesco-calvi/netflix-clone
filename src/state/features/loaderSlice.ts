@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 const initialState: { isLoading: boolean } = {
-  isLoading: false,
+  isLoading: true,
 };
 
 export const loaderSlice = createSlice({

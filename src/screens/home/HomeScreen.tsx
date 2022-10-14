@@ -9,11 +9,13 @@ import { selectSubscription } from "../../state/features/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const HomeScreen = () => {
-  // const navigate = useNavigate();
-  // const subscribed = useSelector(selectSubscription);
-  // React.useEffect(() => {
-  //   !subscribed && navigate("/profile");
-  // }, [subscribed]);
+  const navigate = useNavigate();
+  const subscribed = useSelector(selectSubscription);
+  React.useEffect(() => {
+    console.log(subscribed);
+    !subscribed && navigate("/profile");
+  }, [subscribed, navigate]);
+
   return (
     <Container>
       <Nav />

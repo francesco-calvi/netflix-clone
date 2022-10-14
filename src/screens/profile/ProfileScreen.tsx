@@ -19,10 +19,16 @@ const ProfileScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    !user.uid && navigate("/");
+  }, [user.uid, navigate]);
+
   const callbackSignOut = React.useCallback(() => {
-    dispatch(logout());
-    auth.signOut().then(() => navigate("/"));
-  }, []);
+    auth.signOut().then(() => {
+      dispatch(logout());
+      navigate("/");
+    });
+  }, [navigate, dispatch]);
 
   return (
     <Container>
