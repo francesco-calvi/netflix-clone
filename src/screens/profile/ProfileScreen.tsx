@@ -14,49 +14,49 @@ import {
 import Plans from "../../components/plans/Plans";
 import { useNavigate } from "react-router-dom";
 
-const ProfileScreen = () => {
-  const user = useSelector(selectUser);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+const ProfileScreen = React.memo(
+  () => {
+    const user = useSelector(selectUser);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    !user.uid && navigate("/");
-  }, [user.uid, navigate]);
+    React.useEffect(() => {
+      !user.uid && navigate("/");
+    }, [user.uid, navigate]);
 
-  const callbackSignOut = React.useCallback(() => {
-    auth.signOut().then(() => {
-      dispatch(logout());
-      navigate("/");
-    });
-  }, [navigate, dispatch]);
+    const callbackSignOut = React.useCallback(() => {
+      auth.signOut().then(() => {
+        dispatch(logout());
+        navigate("/");
+      });
+    }, [navigate, dispatch]);
 
-  return (
-    <Container>
-      <Nav />
-      <Body>
-        <h1>Edit Profile</h1>
-        <Info>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-            alt="avatar"
-          />
-          <Details>
-            <h2>{user.email}</h2>
-            <PlansContainer>
-              <h3>Plans</h3>
-              <Plans />
-              <SignoutButton
-                onClick={callbackSignOut}
-                className="profileScreen__signOut"
-              >
-                Sign Out
-              </SignoutButton>
-            </PlansContainer>
-          </Details>
-        </Info>
-      </Body>
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <Nav />
+        <Body>
+          <h1>Edit Profile</h1>
+          <Info>
+            <img src="/assets/images/avatar.png" alt="avatar" />
+            <Details>
+              <h2>{user.email}</h2>
+              <PlansContainer>
+                <h3>Plans</h3>
+                <Plans />
+                <SignoutButton
+                  onClick={callbackSignOut}
+                  className="profileScreen__signOut"
+                >
+                  Sign Out
+                </SignoutButton>
+              </PlansContainer>
+            </Details>
+          </Info>
+        </Body>
+      </Container>
+    );
+  },
+  () => true
+);
 
 export default ProfileScreen;

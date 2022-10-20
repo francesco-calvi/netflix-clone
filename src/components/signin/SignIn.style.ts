@@ -53,3 +53,13 @@ export const Link = styled.span`
     text-decoration: underline;
   }
 `;
+
+export const ErrorMessage = styled.p`
+  height: 20px;
+  font-size: 13px;
+  color: #e50914;
+  letter-spacing: 0.1rem;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+`;

@@ -22,27 +22,25 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const getSubscription = React.useCallback(
-    async (uid: string | undefined) => {
-      if (uid) {
-        try {
-          const customersRef = doc(db, "customers", uid);
-          const subscriptionsRef = collection(customersRef, "subscriptions");
-          const querySnapshot = await getDocs(subscriptionsRef);
-          const subscription = querySnapshot.docs[querySnapshot.size - 1];
-          if (subscription) {
-            dispatch(
-              setSubscription({
-                role: subscription.data().role,
-                current_period_end:
-                  subscription.data().current_period_end.seconds,
-                current_period_start:
-                  subscription.data().current_period_start.seconds,
-              })
-            );
-          }
-        } catch (e) {
-          console.error(e);
+    async (uid: string) => {
+      try {
+        const customersRef = doc(db, "customers", uid);
+        const subscriptionsRef = collection(customersRef, "subscriptions");
+        const querySnapshot = await getDocs(subscriptionsRef);
+        const subscription = querySnapshot.docs[querySnapshot.size - 1];
+        if (subscription) {
+          dispatch(
+            setSubscription({
+              role: subscription.data().role,
+              current_period_end:
+                subscription.data().current_period_end.seconds,
+              current_period_start:
+                subscription.data().current_period_start.seconds,
+            })
+          );
         }
+      } catch (e) {
+        console.error(e);
       }
     },
     [dispatch]
@@ -51,6 +49,7 @@ const App: React.FC = () => {
   React.useLayoutEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
+        dispatch(setIsLoading(true));
         dispatch(
           login({
             uid: userAuth.uid,
@@ -58,10 +57,8 @@ const App: React.FC = () => {
           })
         );
         await getSubscription(userAuth.uid);
-        dispatch(setIsLoading(false));
-      } else {
-        dispatch(setIsLoading(false));
       }
+      dispatch(setIsLoading(false));
     });
 
     return unsubscribe;

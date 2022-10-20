@@ -1,5 +1,12 @@
 import React from "react";
-import { Container, Input, SignInButton, NewUser, Link } from "./SignIn.style";
+import {
+  Container,
+  Input,
+  SignInButton,
+  NewUser,
+  Link,
+  ErrorMessage,
+} from "./SignIn.style";
 import { auth } from "../../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -8,65 +15,81 @@ import {
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "../../state/features/loaderSlice";
 
-const SignIn = () => {
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const passwordRef = React.useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch();
+const SignIn = React.memo(
+  () => {
+    const emailRef = React.useRef<HTMLInputElement>(null);
+    const passwordRef = React.useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch();
+    const [errorMessage, setErrorMessage] = React.useState<string>();
 
-  const validateInputs = React.useCallback(
-    () =>
-      !!emailRef?.current &&
-      !!passwordRef?.current &&
-      emailRef.current.value !== "" &&
-      passwordRef.current.value !== "",
+    const formatErrorMessage = React.useCallback((message: string) => {
+      const substring = message.substring(
+        message.indexOf("/") + 1,
+        message.indexOf(")")
+      );
+      return substring.split("-").join(" ");
+    }, []);
 
-    [emailRef, passwordRef]
-  );
+    const register: React.MouseEventHandler<HTMLSpanElement> =
+      React.useCallback(
+        (e) => {
+          e.preventDefault();
 
-  const register = (e: any) => {
-    dispatch(setIsLoading(true));
-    e.preventDefault();
-    if (!validateInputs()) return;
+          createUserWithEmailAndPassword(
+            auth,
+            emailRef!.current!.value,
+            passwordRef!.current!.value
+          ).catch((error: any) => {
+            dispatch(setIsLoading(false));
+            setErrorMessage(formatErrorMessage(error.message));
+          });
+        },
+        [emailRef, passwordRef, dispatch, formatErrorMessage]
+      );
 
-    createUserWithEmailAndPassword(
-      auth,
-      emailRef!.current!.value,
-      passwordRef!.current!.value
-    ).catch((error: any) => {
-      alert(error.message);
-      dispatch(setIsLoading(false));
-    });
-  };
+    const signIn: React.MouseEventHandler<HTMLSpanElement> = React.useCallback(
+      (e) => {
+        e.preventDefault();
 
-  const signIn = (e: any) => {
-    dispatch(setIsLoading(true));
-    e.preventDefault();
-    if (!validateInputs()) return;
+        signInWithEmailAndPassword(
+          auth,
+          emailRef!.current!.value,
+          passwordRef!.current!.value
+        ).catch((error: any) => {
+          dispatch(setIsLoading(false));
+          setErrorMessage(formatErrorMessage(error.message));
+        });
+      },
+      [emailRef, passwordRef, dispatch, formatErrorMessage]
+    );
 
-    signInWithEmailAndPassword(
-      auth,
-      emailRef!.current!.value,
-      passwordRef!.current!.value
-    ).catch((error: any) => {
-      alert(error.message);
-      dispatch(setIsLoading(false));
-    });
-  };
-
-  return (
-    <Container>
-      <form>
-        <h1>Sign In</h1>
-        <Input ref={emailRef} placeholder="Email" type="email" />
-        <Input ref={passwordRef} placeholder="Password" type="password" />
-        <SignInButton type="submit" value="Sign In" onClick={signIn} />
-        <NewUser>
-          <span>New to Netflix? </span>
-          <Link onClick={register}>Sign up now.</Link>
-        </NewUser>
-      </form>
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <form>
+          <h1>Sign In</h1>
+          <Input
+            ref={emailRef}
+            placeholder="Email"
+            type="email"
+            onFocus={() => setErrorMessage("")}
+          />
+          <Input
+            ref={passwordRef}
+            placeholder="Password"
+            type="password"
+            onFocus={() => setErrorMessage("")}
+          />
+          <ErrorMessage>{errorMessage}</ErrorMessage>
+          <SignInButton type="submit" value="Sign In" onClick={signIn} />
+          <NewUser>
+            <span>New to Netflix? </span>
+            <Link onClick={register}>Sign up now.</Link>
+          </NewUser>
+        </form>
+      </Container>
+    );
+  },
+  () => true
+);
 
 export default SignIn;
