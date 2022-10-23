@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "../../axios";
 import { Movie } from "../../types";
-import { Container, Title, MovieCard, Movies } from "./Row.style";
+import { Container, MovieCard, Movies } from "./Row.style";
 
 type Props = {
   title: string;
@@ -11,7 +11,7 @@ type Props = {
 const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
   const [movies, setMovies] = React.useState<Movie[]>();
 
-  const base_url = "https://image.tmdb.org/t/p/original/";
+  const base_url = "https://image.tmdb.org/t/p/w500/";
 
   React.useEffect(() => {
     (async () => {
@@ -20,24 +20,24 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
       return request;
     })();
   }, [fetchUrl]);
-
+  console.log(movies);
   return movies ? (
     <Container>
-      <Title>{title}</Title>
+      <h2>{title}</h2>
       <Movies>
         {movies?.length > 0 &&
           movies.map(
             (movie) =>
               ((isLargeRow && !!movie.poster_path) ||
                 !!movie.backdrop_path) && (
-                <MovieCard
-                  isLargeRow={isLargeRow}
-                  key={movie.id}
-                  src={`${base_url}${
-                    isLargeRow ? movie.poster_path : movie.backdrop_path
-                  }`}
-                  alt={movie.name}
-                />
+                <MovieCard isLargeRow={isLargeRow} key={movie.id}>
+                  <img
+                    src={`${base_url}${
+                      isLargeRow ? movie.poster_path : movie.backdrop_path
+                    }`}
+                    alt={movie.name}
+                  />{" "}
+                </MovieCard>
               )
           )}
       </Movies>

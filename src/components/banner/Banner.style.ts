@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  height: 448px;
   color: white;
   object-fit: contain;
 `;
@@ -10,7 +9,6 @@ export const Container = styled.div`
 export const Contents = styled.div`
   margin-left: 30px;
   padding-top: 140px;
-  height: 190px;
 `;
 
 export const Title = styled.h1`

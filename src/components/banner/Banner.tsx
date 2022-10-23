@@ -42,7 +42,6 @@ const Banner = React.memo(
               ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
               : `/assets/images/bg-placeholder.jpg`
           })`,
-          backgroundPosition: "center center",
         }}
       >
         <Contents>
