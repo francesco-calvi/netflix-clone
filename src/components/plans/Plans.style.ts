@@ -1,16 +1,27 @@
 import styled, { css } from "styled-components";
 
-export const Plan = styled.div<{ isCurrentPlan?: boolean }>`
+export const Plan = styled.div<{
+  isCurrentPlan?: boolean;
+  checkoutRequestFired: boolean;
+}>`
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  opacity: 0.8;
-
-  &:hover {
-    opacity: ${({ isCurrentPlan }) => (isCurrentPlan ? 0.8 : 1)};
-  }
+  opacity: ${({ checkoutRequestFired }) => (checkoutRequestFired ? 0.6 : 1)};
 
   & > button {
+    &:hover {
+      ${({ checkoutRequestFired, isCurrentPlan }) =>
+        checkoutRequestFired || isCurrentPlan
+          ? css`
+              cursor: default;
+            `
+          : css`
+              cursor: pointer;
+              opacity: 0.8;
+            `};
+    }
+
     ${({ isCurrentPlan }) =>
       isCurrentPlan &&
       css`
@@ -28,4 +39,7 @@ export const SubscribeButton = styled.button`
   border: none;
   cursor: pointer;
   background-color: #e50914;
+  width: 140px;
+  display: grid;
+  place-items: center;
 `;

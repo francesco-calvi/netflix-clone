@@ -10,7 +10,7 @@ import ProfileScreen from "./screens/profile/ProfileScreen";
 import db from "./firebase";
 import { collection, getDocs, doc } from "firebase/firestore";
 import { selectLoading, setIsLoading } from "./state/features/loaderSlice";
-import LoaderScreen from "./screens/loader/LoaderScreen";
+import { Spinner, SpinnerContainer } from "./App.style";
 
 const Wrapper = styled.div`
   background-color: #111;
@@ -67,7 +67,9 @@ const App: React.FC = () => {
   return (
     <Wrapper>
       {loading ? (
-        <LoaderScreen />
+        <SpinnerContainer>
+          <Spinner size={150} />
+        </SpinnerContainer>
       ) : (
         <Router>
           <Routes>

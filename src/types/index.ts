@@ -1,3 +1,5 @@
+import { DocumentData } from "firebase/firestore";
+
 export type User = {
   uid: string;
   email: string;
@@ -60,4 +62,8 @@ export type Movie = {
   poster_path: string;
   vote_average: number;
   vote_count: number;
+};
+
+export type Product = {
+  [id: string]: DocumentData;
 };
