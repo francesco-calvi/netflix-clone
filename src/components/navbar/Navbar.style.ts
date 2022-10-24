@@ -6,7 +6,7 @@ export const Container = styled.nav<{ showBg: boolean }>`
   padding: 20px;
   width: 100%;
   height: 30px;
-  z-index: 1;
+  z-index: 2;
   transition-timing-function: ease-in;
   transition: all 0.5s;
   background-color: ${(props) => (props.showBg ? "#111" : "transparent")};

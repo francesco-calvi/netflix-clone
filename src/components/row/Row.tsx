@@ -1,7 +1,13 @@
 import React from "react";
 import axios from "../../axios";
 import { Movie } from "../../types";
-import { Container, MovieCard, Movies } from "./Row.style";
+import {
+  Container,
+  MovieCard,
+  Movies,
+  Handler,
+  MoviesContainer,
+} from "./Row.style";
 
 type Props = {
   title: string;
@@ -10,6 +16,9 @@ type Props = {
 };
 const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
   const [movies, setMovies] = React.useState<Movie[]>();
+  const [start, setStart] = React.useState<boolean>(true);
+  const [end, setEnd] = React.useState<boolean>(false);
+  const sliderRef = React.useRef<HTMLDivElement>(null);
 
   const base_url = "https://image.tmdb.org/t/p/w500/";
 
@@ -20,27 +29,71 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
       return request;
     })();
   }, [fetchUrl]);
-  console.log(movies);
+
+  const handleScroll = React.useCallback(() => {
+    const slider = sliderRef?.current;
+    if (slider) {
+      const scrollLeft = slider.scrollLeft;
+      setStart(scrollLeft === 0);
+      setEnd(scrollLeft + slider.offsetWidth === slider.scrollWidth);
+    }
+  }, [sliderRef]);
+
+  React.useEffect(() => {
+    sliderRef?.current?.addEventListener("scroll", handleScroll);
+  }, [sliderRef, handleScroll]);
+
+  const scroll = React.useCallback(
+    (dir: string) => {
+      const slider = sliderRef?.current;
+      if (slider) {
+        switch (dir) {
+          case "left": {
+            slider.scrollLeft -= slider.offsetWidth;
+            break;
+          }
+          case "right": {
+            slider.scrollLeft += slider.offsetWidth;
+            break;
+          }
+        }
+      }
+    },
+    [sliderRef]
+  );
+
   return movies ? (
     <Container>
       <h2>{title}</h2>
-      <Movies>
-        {movies?.length > 0 &&
-          movies.map(
-            (movie) =>
-              ((isLargeRow && !!movie.poster_path) ||
-                !!movie.backdrop_path) && (
-                <MovieCard isLargeRow={isLargeRow} key={movie.id}>
-                  <img
-                    src={`${base_url}${
-                      isLargeRow ? movie.poster_path : movie.backdrop_path
-                    }`}
-                    alt={movie.name}
-                  />{" "}
-                </MovieCard>
-              )
-          )}
-      </Movies>
+      <MoviesContainer start={start} end={end}>
+        <Handler className="back" onClick={() => scroll("left")}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+          </svg>
+        </Handler>
+        <Handler className="next" onClick={() => scroll("right")}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
+          </svg>
+        </Handler>
+        <Movies ref={sliderRef}>
+          {movies?.length > 0 &&
+            movies.map(
+              (movie) =>
+                ((isLargeRow && !!movie.poster_path) ||
+                  !!movie.backdrop_path) && (
+                  <MovieCard isLargeRow={isLargeRow} key={movie.id}>
+                    <img
+                      src={`${base_url}${
+                        isLargeRow ? movie.poster_path : movie.backdrop_path
+                      }`}
+                      alt={movie.name}
+                    />{" "}
+                  </MovieCard>
+                )
+            )}
+        </Movies>
+      </MoviesContainer>
     </Container>
   ) : (
     <></>
