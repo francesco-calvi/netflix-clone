@@ -6,7 +6,8 @@ import {
   MovieCard,
   Slider,
   Handler,
-  MoviesContainer,
+  Movies,
+  SliderWrapper,
 } from "./Row.style";
 
 type Props = {
@@ -64,9 +65,9 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
     }
   }, []);
 
-  const renderSlider = React.useMemo(
+  const renderMovies = React.useMemo(
     () => (
-      <Slider ref={sliderRef}>
+      <Movies>
         {movies &&
           movies?.length > 0 &&
           movies.map(
@@ -83,7 +84,7 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
                 </MovieCard>
               )
           )}
-      </Slider>
+      </Movies>
     ),
     [movies, isLargeRow]
   );
@@ -91,7 +92,7 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
   return (
     <Container>
       <h2>{title}</h2>
-      <MoviesContainer isStart={start} isEnd={end}>
+      <SliderWrapper isStart={start} isEnd={end}>
         <Handler className="back" onClick={() => scroll("left")}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
@@ -102,8 +103,8 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
             <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
           </svg>
         </Handler>
-        {renderSlider}
-      </MoviesContainer>
+        <Slider ref={sliderRef}>{renderMovies}</Slider>
+      </SliderWrapper>
     </Container>
   );
 };

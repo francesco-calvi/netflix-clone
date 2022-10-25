@@ -10,15 +10,15 @@ export const Container = styled.div`
 
 export const Logo = styled.img`
   position: fixed;
-  left: 0;
+  top: 20px;
+  left: 40px;
   width: 150px;
   object-fit: contain;
-  padding-left: 20px;
 `;
 
 export const SignInButton = styled.button`
   position: fixed;
-  right: 20px;
+  right: 40px;
   top: 20px;
   padding: 10px 20px;
   font-size: 1rem;

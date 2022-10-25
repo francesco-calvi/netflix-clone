@@ -8,19 +8,11 @@ export const Container = styled.div`
   }
 `;
 
-export const Slider = styled.div`
+export const Movies = styled.div`
   display: flex;
-  overflow-y: hidden;
-  overflow-x: scroll;
   gap: 10px;
-  scrollbar-width: none;
   padding: 0 4%;
   margin: 20px 0;
-  scroll-behavior: smooth;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export const MovieCard = styled.div<{ isLargeRow?: boolean }>`
@@ -82,8 +74,9 @@ export const Handler = styled.div`
   }
 `;
 
-export const MoviesContainer = styled.div<{ isStart: boolean; isEnd: boolean }>`
+export const SliderWrapper = styled.div<{ isStart: boolean; isEnd: boolean }>`
   position: relative;
+
   & > .back {
     display: ${({ isStart }) => (isStart ? "none" : "flex")};
   }
@@ -98,5 +91,16 @@ export const MoviesContainer = styled.div<{ isStart: boolean; isEnd: boolean }>`
     & > .next > svg {
       display: ${({ isEnd }) => (isEnd ? "none" : "block")};
     }
+  }
+`;
+
+export const Slider = styled.div`
+  overflow-y: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
