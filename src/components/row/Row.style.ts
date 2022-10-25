@@ -8,7 +8,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Movies = styled.div`
+export const Slider = styled.div`
   display: flex;
   overflow-y: hidden;
   overflow-x: scroll;
@@ -82,21 +82,21 @@ export const Handler = styled.div`
   }
 `;
 
-export const MoviesContainer = styled.div<{ start: any; end: any }>`
+export const MoviesContainer = styled.div<{ isStart: boolean; isEnd: boolean }>`
   position: relative;
   & > .back {
-    display: ${({ start }) => (start ? "none" : "flex")};
+    display: ${({ isStart }) => (isStart ? "none" : "flex")};
   }
   & > .next {
-    display: ${({ end }) => (end ? "none" : "flex")};
+    display: ${({ isEnd }) => (isEnd ? "none" : "flex")};
   }
 
   &:hover {
     & > .back > svg {
-      display: ${({ start }) => (start ? "none" : "block")};
+      display: ${({ isStart }) => (isStart ? "none" : "block")};
     }
     & > .next > svg {
-      display: ${({ end }) => (end ? "none" : "block")};
+      display: ${({ isEnd }) => (isEnd ? "none" : "block")};
     }
   }
 `;

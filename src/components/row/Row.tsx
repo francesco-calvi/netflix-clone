@@ -4,7 +4,7 @@ import { Movie } from "../../types";
 import {
   Container,
   MovieCard,
-  Movies,
+  Slider,
   Handler,
   MoviesContainer,
 } from "./Row.style";
@@ -37,35 +37,61 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
       setStart(scrollLeft === 0);
       setEnd(scrollLeft + slider.offsetWidth === slider.scrollWidth);
     }
-  }, [sliderRef]);
+  }, []);
 
   React.useEffect(() => {
-    sliderRef?.current?.addEventListener("scroll", handleScroll);
-  }, [sliderRef, handleScroll]);
+    const slider = sliderRef?.current;
+    slider?.addEventListener("scroll", handleScroll);
 
-  const scroll = React.useCallback(
-    (dir: string) => {
-      const slider = sliderRef?.current;
-      if (slider) {
-        switch (dir) {
-          case "left": {
-            slider.scrollLeft -= slider.offsetWidth;
-            break;
-          }
-          case "right": {
-            slider.scrollLeft += slider.offsetWidth;
-            break;
-          }
+    return () => {
+      slider?.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  const scroll = React.useCallback((dir: string) => {
+    const slider = sliderRef?.current;
+    if (slider) {
+      switch (dir) {
+        case "left": {
+          slider.scrollLeft -= slider.offsetWidth;
+          break;
+        }
+        case "right": {
+          slider.scrollLeft += slider.offsetWidth;
+          break;
         }
       }
-    },
-    [sliderRef]
+    }
+  }, []);
+
+  const renderSlider = React.useMemo(
+    () => (
+      <Slider ref={sliderRef}>
+        {movies &&
+          movies?.length > 0 &&
+          movies.map(
+            (movie) =>
+              ((isLargeRow && !!movie.poster_path) ||
+                !!movie.backdrop_path) && (
+                <MovieCard isLargeRow={isLargeRow} key={movie.id}>
+                  <img
+                    src={`${base_url}${
+                      isLargeRow ? movie.poster_path : movie.backdrop_path
+                    }`}
+                    alt={movie.name}
+                  />
+                </MovieCard>
+              )
+          )}
+      </Slider>
+    ),
+    [movies, isLargeRow]
   );
 
-  return movies ? (
+  return (
     <Container>
       <h2>{title}</h2>
-      <MoviesContainer start={start} end={end}>
+      <MoviesContainer isStart={start} isEnd={end}>
         <Handler className="back" onClick={() => scroll("left")}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
@@ -76,27 +102,9 @@ const Row: React.FC<Props> = ({ title, fetchUrl, isLargeRow = false }) => {
             <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
           </svg>
         </Handler>
-        <Movies ref={sliderRef}>
-          {movies?.length > 0 &&
-            movies.map(
-              (movie) =>
-                ((isLargeRow && !!movie.poster_path) ||
-                  !!movie.backdrop_path) && (
-                  <MovieCard isLargeRow={isLargeRow} key={movie.id}>
-                    <img
-                      src={`${base_url}${
-                        isLargeRow ? movie.poster_path : movie.backdrop_path
-                      }`}
-                      alt={movie.name}
-                    />{" "}
-                  </MovieCard>
-                )
-            )}
-        </Movies>
+        {renderSlider}
       </MoviesContainer>
     </Container>
-  ) : (
-    <></>
   );
 };
 

@@ -3,13 +3,18 @@ import styled from "styled-components";
 export const Container = styled.nav<{ showBg: boolean }>`
   position: fixed;
   top: 0;
-  padding: 20px;
-  width: 100%;
-  height: 30px;
+  left: 0;
+  right: 0;
+  padding: 0 4%;
+  height: 68px;
+  box-sizing: border-box;
   z-index: 2;
   transition-timing-function: ease-in;
   transition: all 0.5s;
   background-color: ${(props) => (props.showBg ? "#111" : "transparent")};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Contents = styled.div`
@@ -18,18 +23,14 @@ export const Contents = styled.div`
 `;
 
 export const Logo = styled.img`
-  position: fixed;
-  top: 10px;
-  left: 0;
-  width: 80px;
+  width: 90px;
   object-fit: contain;
-  padding-left: 20px;
   cursor: pointer;
 `;
 
 export const Avatar = styled.img`
   cursor: pointer;
-  position: fixed;
-  right: 20px;
-  width: 30px;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
 `;

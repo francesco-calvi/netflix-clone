@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Contents, Logo, Avatar } from "./Navbar.style";
+import { Container, Logo, Avatar } from "./Navbar.style";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectSubscription } from "../../state/features/userSlice";
@@ -33,15 +33,13 @@ const Nav = React.memo(
 
     return (
       <Container showBg={show}>
-        <Contents>
-          <Logo onClick={goToHome} src="/assets/images/logo.png" alt="logo" />
-          <Avatar
-            onClick={goToProfile}
-            className="nav__avatar"
-            src="/assets/images/avatar.png"
-            alt="avatar"
-          />
-        </Contents>
+        <Logo onClick={goToHome} src="/assets/images/logo.png" alt="logo" />
+        <Avatar
+          onClick={goToProfile}
+          className="nav__avatar"
+          src="/assets/images/avatar.png"
+          alt="avatar"
+        />
       </Container>
     );
   },

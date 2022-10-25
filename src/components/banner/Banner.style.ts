@@ -7,7 +7,7 @@ export const Container = styled.div`
 `;
 
 export const Contents = styled.div`
-  margin-left: 30px;
+  padding: 0 4%;
   padding-top: 140px;
 `;
 
