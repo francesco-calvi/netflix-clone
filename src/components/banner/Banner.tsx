@@ -56,7 +56,6 @@ const Banner = React.memo(
             <Description>{truncate(movie.overview, 150)}</Description>
           )}
         </Contents>
-
         <FadeBottom />
       </Container>
     );

@@ -36,6 +36,7 @@ export const Handler = styled.div`
   bottom: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   position: absolute;
   text-align: center;
   top: 0;
@@ -45,20 +46,21 @@ export const Handler = styled.div`
   padding: 0 5px;
   box-sizing: border-box;
 
-  &:hover {
-    cursor: pointer;
-    background: hsla(0, 0%, 8%, 0.6);
-    & > svg {
-      transform: scale(1.25);
-      transition: transform 0.2s ease-out 0s;
-    }
-  }
-
   & > svg {
     fill: #fafbf9;
     width: 2.5vw;
+    height: 2.5vw;
     display: none;
     opacity: 0.8;
+    transition: transform 0.2s ease-out 0s;
+    &:hover {
+      transform: scale(1.25);
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: hsla(0, 0%, 8%, 0.6);
   }
 
   &.back {

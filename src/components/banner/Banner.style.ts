@@ -4,11 +4,15 @@ export const Container = styled.div`
   position: relative;
   color: white;
   object-fit: contain;
+  margin-bottom: 50px;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 export const Contents = styled.div`
   padding: 0 4%;
-  padding-top: 140px;
 `;
 
 export const Title = styled.h1`
@@ -50,6 +54,10 @@ export const Description = styled.p`
 `;
 
 export const FadeBottom = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 7.4rem;
   background-image: linear-gradient(
     180deg,

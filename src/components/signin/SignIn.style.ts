@@ -25,6 +25,7 @@ export const Input = styled.input`
   border-radius: 5px;
   border: none;
   padding: 5px 15px;
+  width: -webkit-fill-available;
 `;
 
 export const SignInButton = styled.input`
@@ -61,5 +62,15 @@ export const ErrorMessage = styled.p`
   letter-spacing: 0.1rem;
   &::first-letter {
     text-transform: capitalize;
+  }
+`;
+
+export const PasswordInputContainer = styled.div`
+  position: relative;
+  & svg {
+    position: absolute;
+    width: 20px;
+    right: 15px;
+    top: 15px;
   }
 `;
