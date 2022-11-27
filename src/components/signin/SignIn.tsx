@@ -35,10 +35,13 @@ const SignIn = React.memo(
     }, []);
 
     const validatePassword = () => {
-      // 8 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter
-      return passwordRef!.current!.value.match(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/
+      // 8 characters which contain at least one numeric digit, one uppercase and one lowercase letter, one special character
+      const result = passwordRef!.current!.value.match(
+        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/
       );
+
+      console.log(result);
+      return result;
     };
 
     const register: React.MouseEventHandler<HTMLSpanElement> =
@@ -49,7 +52,7 @@ const SignIn = React.memo(
           const isValid = validatePassword();
           if (!isValid) {
             setErrorMessage(
-              "min 8 letters, one numeric digit, one uppercase and one lowercase letter."
+              "min 8 digits, 1 number, 1 uppercase, one special character."
             );
           } else {
             createUserWithEmailAndPassword(
